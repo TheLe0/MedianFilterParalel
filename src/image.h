@@ -149,20 +149,20 @@ int filterImage(char * image,IMAGE * IMG,unsigned char buffer[][3]){
                         green += buffer[imageY * w + imageX][1] * filter[filterY][filterX];
                         blue += buffer[imageY * w + imageX][2] * filter[filterY][filterX];
                     }
-                    if(abs(factor*red + bias)>255){
+                    if(fabs(factor*red + bias)>255){
                         buffer[y * w + x][0] = 255;
                     }else{
-                        buffer[y * w + x][0] = abs(factor*red + bias);
+                        buffer[y * w + x][0] = fabs(factor*red + bias);
                     }
-                    if(abs(factor*green + bias)>255){
+                    if(fabs(factor*green + bias)>255){
                         buffer[y * w + x][1] = 255;
                     }else{
-                        buffer[y * w + x][1] = abs(factor*green + bias);
+                        buffer[y * w + x][1] = fabs(factor*green + bias);
                     }
-                    if(abs(factor*blue + bias)>255){
+                    if(fabs(factor*blue + bias)>255){
                         buffer[y * w + x][2] = 255;
                     }else{
-                        buffer[y * w + x][2] = abs(factor*blue + bias);
+                        buffer[y * w + x][2] = fabs(factor*blue + bias);
                     }
             }
     }else if(ch == 3){
@@ -197,20 +197,20 @@ int filterImage(char * image,IMAGE * IMG,unsigned char buffer[][3]){
                         green += buffer[imageY * w + imageX][1] * filter[filterY][filterX];
                         blue += buffer[imageY * w + imageX][2] * filter[filterY][filterX];
                     }
-                    if(abs(factor*red + bias)>255){
+                    if(fabs(factor*red + bias)>255){
                         buffer[y * w + x][0] = 255;
                     }else{
-                        buffer[y * w + x][0] = abs(factor*red + bias);
+                        buffer[y * w + x][0] = fabs(factor*red + bias);
                     }
-                    if(abs(factor*green + bias)>255){
+                    if(fabs(factor*green + bias)>255){
                         buffer[y * w + x][1] = 255;
                     }else{
-                        buffer[y * w + x][1] = abs(factor*green + bias);
+                        buffer[y * w + x][1] = fabs(factor*green + bias);
                     }
-                    if(abs(factor*blue + bias)>255){
+                    if(fabs(factor*blue + bias)>255){
                         buffer[y * w + x][2] = 255;
                     }else{
-                        buffer[y * w + x][2] = abs(factor*blue + bias);
+                        buffer[y * w + x][2] = fabs(factor*blue + bias);
                     }
             }
     }else{
