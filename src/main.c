@@ -4,8 +4,8 @@
 #include <locale.h>
 #include <omp.h>
 
-#define N 3
-#define NTHREADS 3
+#define N 7
+#define NTHREADS 7
 
 typedef struct Image{
     int width;
@@ -71,49 +71,50 @@ void writeImage(FILE * fpo,char * image,IMAGE * IMG,unsigned char buffer[][3]){
 }
 
 int filterImage(char * image,IMAGE * IMG,unsigned char buffer[][3]){
-    int x,y,i,j,k,n,sum[3],ch,z, id;
+    
+    int id, n = N;
+    
+    omp_set_num_threads(NTHREADS);
 
-    n = N;
+    #pragma omp parallel private(id)
+    {
+        int x,y,i,j,k,sum[3],ch,z;
+        id = omp_get_thread_num();
 
-    int a[(n+2) * (n+2)][3];
-    float prod[3],b[(n+2) * (n+2)][3];
+        int a[(n+2) * (n+2)][3];
+        float prod[3],b[(n+2) * (n+2)][3];
 
-    for(y=n/2;y<IMG->height-n/2;y++){
-        for(x=n/2;x<IMG->width-n/2;x++){
-
-            omp_set_num_threads(NTHREADS);
-
-            #pragma omp parallel private(id)
+        for (y=n/2;y<IMG->height-n/2;y++)
+        {
+            for(x=n/2;x<IMG->width-n/2;x++)
             {
-                id = omp_get_thread_num();
-                sum[id] = 0;
-            }
-            
-            for(j=-n/2;j<=n/2;j++){
-                for(i=-n/2;i<=n/2;i++){
-
-                    omp_set_num_threads(NTHREADS);
-
-                    #pragma omp parallel private(id)
+                for (k=0;k<3;k++)
+                {
+                    sum[k] = 0;
+                }
+                
+                for(j=-n/2;j<=n/2;j++)
+                {
+                    for(i=-n/2;i<=n/2;i++)
                     {
-                        id = omp_get_thread_num();
 
-                        sum[id] += buffer[(y+j)*IMG->width + (x+i)][id];
+                        for(k=0;k<3;k++)
+                        {
+                            sum[k] += buffer[(y+j)*IMG->width + (x+i)][k];
+                        }
                     }
                 }
-            }
 
-            omp_set_num_threads(NTHREADS);
-
-            #pragma omp parallel private(id)
-            {
-                id = omp_get_thread_num();
-                buffer[y*IMG->width + x][id] = sum[id]/n/n;
+                for (k=0;k<3;k++)
+                {
+                    buffer[y*IMG->width + x][k] = sum[k]/n/n;
+                }
             }
-        }
      
+        }
+
     }
-    
+        
     FILE * fpo;
     writeImage(fpo,image,IMG,buffer);
 
