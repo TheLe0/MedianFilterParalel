@@ -141,8 +141,8 @@ int main(){
     IMAGE IMG;
     FILE * fpi;
 
-    char imageIn[] = {"img.bmp"};
-    char imageOut[] = {"new.bmp"};
+    char imageIn[] = {"../images/img.bmp"};
+    char imageOut[] = {"../images/new.bmp"};
 
     int size = sizeImage(fpi,imageIn);
     unsigned char buffer[size][3];
